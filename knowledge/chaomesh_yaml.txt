@@ -1,0 +1,149 @@
+Chaos Mesh Fault Injection Configuration Guide
+Introduction
+This guide provides templates and explanations for common fault injection scenarios using Chaos Mesh, a cloud-native chaos engineering platform for Kubernetes.
+
+```
+Basic Template Structure
+All Chaos Mesh configurations follow this basic structure:
+YAML
+    apiVersion: chaos-mesh.org/v1alpha1
+    kind: <ChaosType>
+    metadata:
+      name: <experiment-name>
+      namespace: chaos-testing
+    spec:
+      # Specific chaos configuration
+```
+Common Fault Injection Types
+
+```
+1. Pod Chaos
+Used for pod-level fault injection:
+YAML
+    apiVersion: chaos-mesh.org/v1alpha1
+    kind: PodChaos
+    metadata:
+      name: pod-failure-example
+      namespace: chaos-testing
+    spec:
+      action: pod-failure       # Types: pod-failure/pod-kill/container-kill
+      mode: one                 # Modes: one/all/fixed/fixed-percent/random-max-percent
+      duration: "30s"          # Duration of chaos experiment
+      selector:
+        namespaces:
+          - default
+        labelSelectors:
+          app: "nginx"         # Target pod labels
+
+```
+2. Network Chaos
+For network-related fault injection:
+YAML
+    apiVersion: chaos-mesh.org/v1alpha1
+    kind: NetworkChaos
+    metadata:
+      name: network-delay-example
+      namespace: chaos-testing
+    spec:
+      action: delay            # Types: delay/loss/duplicate/corrupt/partition/bandwidth
+      mode: one
+      selector:
+        namespaces:
+          - default
+        labelSelectors:
+          app: "nginx"
+      delay:
+        latency: "100ms"
+        correlation: "100"
+        jitter: "0ms"
+      duration: "30s"
+```
+3. IO Chaos
+For filesystem I/O fault injection:
+YAML
+    apiVersion: chaos-mesh.org/v1alpha1
+    kind: IOChaos
+    metadata:
+      name: io-delay-example
+      namespace: chaos-testing
+    spec:
+      action: latency         # Types: latency/fault/attrOverride
+      mode: one
+      selector:
+        namespaces:
+          - default
+        labelSelectors:
+          app: "nginx"
+      volumePath: /data
+      path: "*"
+      delay: "100ms"
+      percent: 100
+      duration: "30s"
+```
+4. Stress Chaos
+For resource pressure testing:
+YAML
+    apiVersion: chaos-mesh.org/v1alpha1
+    kind: StressChaos
+    metadata:
+      name: cpu-stress-example
+      namespace: chaos-testing
+    spec:
+      mode: one
+      selector:
+        namespaces:
+          - default
+        labelSelectors:
+          app: "nginx"
+      stressors:
+        cpu:
+          workers: 1
+          load: 20
+        memory:
+          workers: 1
+          size: "256MB"
+      duration: "30s"
+```
+
+Key Configuration Parameters
+Common Fields
+
+action: Specifies the type of chaos to inject
+mode: Defines the scope of chaos injection
+duration: Specifies how long the chaos experiment runs
+selector: Defines target pods for chaos injection
+Mode Options
+
+one: Affects one random pod
+all: Affects all selected pods
+fixed: Affects fixed number of pods
+fixed-percent: Affects percentage of pods
+random-max-percent: Affects random percentage up to max
+Selector Configuration
+
+namespaces: Target Kubernetes namespaces
+labelSelectors: Pod labels to match
+annotationSelectors: Pod annotations to match
+Implementation Guide
+Prerequisites
+
+Ensure Chaos Mesh is properly installed in your cluster
+Verify you have necessary permissions
+Steps to Apply
+
+Choose appropriate chaos type
+Modify metadata (name, namespace)
+Configure selector to match target pods
+Adjust chaos parameters based on testing requirements
+Apply using kubectl apply -f <filename>.yaml
+Best Practices
+
+Start with small-scale experiments
+Monitor system behavior during chaos
+Use appropriate duration for meaningful results
+Ensure proper target selection
+Monitoring and Verification
+Monitor chaos experiments through Chaos Mesh dashboard
+Check pod logs and events
+Verify system behavior during and after chaos injection
+Use Chaos Mesh's built-in observability features

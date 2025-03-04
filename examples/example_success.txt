@@ -1,0 +1,238 @@
+(.venv) G:\UndergraduteResearch\4.ISSSTA_ChaosCopliot\Text2Fault>g:/UndergraduteResearch/4.ISSSTA_ChaosCopliot/Text2Fault/.venv/Scripts/python.exe g:/UndergraduteResearch/4.ISSSTA_ChaosCopliot/Text2Fault/src/crew.py
+# Agent: Fault Requirement Analyst
+## Task: 
+        1. User failure use case requirements: Please help me inject a communication type fault to the order service.
+
+        2. If necessary, you can call human_tool to let users enter missing information and ultimately get complete information.Calling the tool requires passing in the information you want the user to input.
+
+        3. Extract key information such as target service of fault injection, injected fault type, injected fault mode, and necessary arguments information.
+
+Please specify the exact type of communication fault you want to inject into the order service (e.g., latency, packet loss, disruption). Also, describe the fault mode (e.g., intermittent, constant) and any other parameters or conditions required for this fault.
+delay
+
+
+# Agent: Fault Requirement Analyst
+## Thought: I need to gather more detailed information about the fault injection requirement for the order service. Specifically, I need to understand what type of communication fault the user wants to inject, the mode of fault injection, and any additional parameters necessary to perform this injection.
+## Using tool: human_input
+## Tool Input:
+"{\"information_needed\": \"Please specify the exact type of communication fault you want to inject into the order service (e.g., latency, packet loss, disruption). Also, describe the fault mode (e.g., intermittent, constant) and any other parameters or conditions required for this fault.\"}"     
+## Tool Output:
+delay
+You mentioned a 'delay' in the communication fault type. Could you specify the duration and frequency of this delay? Also, are there specific conditions under which this fault should be triggered?
+duration is 10s. I ask you to complete others.
+
+
+# Agent: Fault Requirement Analyst
+## Using tool: human_input
+## Tool Input:
+"{\"information_needed\": \"You mentioned a 'delay' in the communication fault type. Could you specify the duration and frequency of this delay? Also, are there specific conditions under which this fault should be triggered?\"}"
+## Tool Output:
+duration is 10s. I ask you to complete others.
+
+
+# Agent: Fault Requirement Analyst
+## Final Answer:
+```
+Preliminary Requirements Document for Fault Injection:
+
+1. Target Service:
+   - Order Service
+
+2. Injected Fault Type:
+   - Communication Fault
+
+3. Injected Fault Mode:
+   - Delay
+
+4. Fault Injection Details:
+   - Duration of Delay: 10 seconds
+   - Mode: Intermittent (default assumption, as it's a common use case)
+   - Frequency: Random intervals (default assumption unless specified)
+
+5. Additional Parameters:
+   - If applicable, specify conditions for triggering this delay, other services affected, etc.
+
+Note: The assumptions about the fault mode and frequency are based on typical use cases. These can be refined as per specific requirements or changes provided by the user.
+```
+
+This document captures the key elements necessary for initiating a fault injection in the order service's communication path, with room for further customization based on detailed requirements.
+
+
+ ## Final Result: ```
+Preliminary Requirements Document for Fault Injection:
+
+1. Target Service:
+   - Order Service
+
+2. Injected Fault Type:
+   - Communication Fault
+
+3. Injected Fault Mode:
+   - Delay
+
+4. Fault Injection Details:
+   - Duration of Delay: 10 seconds
+   - Mode: Intermittent (default assumption, as it's a common use case)
+   - Frequency: Random intervals (default assumption unless specified)
+
+5. Additional Parameters:
+   - If applicable, specify conditions for triggering this delay, other services affected, etc.
+
+Note: The assumptions about the fault mode and frequency are based on typical use cases. These can be refined as per specific requirements or changes provided by the user.
+```
+
+This document captures the key elements necessary for initiating a fault injection in the order service's communication path, with room for further customization based on detailed requirements.
+ 
+
+=====
+## Please provide feedback on the Final Result and the Agent's actions:
+Confirm correctness.
+ Error parsing LLM output, agent will retry: I did it wrong. Invalid Format: I missed the 'Action:' after 'Thought:'. I will do right next, and don't use a tool I have already used.
+
+If you don't need to use any more tools, you must give your best complete final answer, make sure it satisfy the expect criteria, use the EXACT format below:
+
+Thought: I now can give a great answer
+Final Answer: my best complete final answer to the task.
+
+
+
+
+# Agent: Fault Requirement Analyst
+## Final Answer:
+```
+Preliminary Requirements Document for Fault Injection:
+
+1. Target Service:
+   - Order Service
+
+2. Injected Fault Type:
+   - Communication Fault
+
+3. Injected Fault Mode:
+   - Delay
+
+4. Fault Injection Details:
+   - Duration of Delay: 10 seconds
+   - Mode: Intermittent (default assumption, as it's a common use case)
+   - Frequency: Random intervals (default assumption unless specified)
+
+5. Additional Parameters:
+   - Specify conditions for triggering this delay if applicable, and identify any other services that might be affected.
+
+Note: The assumptions regarding fault mode and frequency are standard defaults based on common scenarios in communication fault injections. These assumptions can be adjusted according to more specific user requirements as needed.
+```
+
+This document fulfills the criteria by clearly outlining the primary aspects required for conducting a fault injection on the order service's communication channel.
+
+
+# Agent: Prompt Generation Agent
+## Task:
+        1. Select the most appropriate tool for the current injection based on your experience.
+        2. Generate prompt words to give to the agent in the next stage.
+        3. To make the prompt more general, you do not need to generate a specific configuration file.
+
+
+
+# Agent: Prompt Generation Agent
+## Final Answer:
+Prompt Template for Fault Injection:
+
+Tool Selection:
+- Selected tool: ChaosMesh
+- Justification: ChaosMesh is well-suited for injecting communication-related delays and supports intermittent delay models with random intervals, making it ideal for this use case involving the Order Service's communication channel.
+
+Prompt for ChaosMesh Agent:
+
+```plaintext
+Execute a fault injection test on the Order Service with the following parameters:
+
+1. Target Service: Order Service
+2. Fault Type: Communication Fault
+3. Fault Mode: Delay
+4. Injection Duration: Introduce a delay of 10 seconds
+5. Delay Mode: Intermittent
+6. Frequency of Delay: Random intervals
+
+Additional Instructions:
+- Specify conditions for triggering the delay if available.
+- Identify any other interconnected services that might be affected by this communication delay.
+- Utilize default assumptions for delay mode and frequency unless overridden by explicit requirements.
+
+Purpose:
+- To simulate an intermittent communication delay in the Order Service and observe the effects on system performance and other interacting services. 
+```
+
+This prompt can be used by the ChaosMesh fault injection tool to simulate the described fault scenario on the Order Service.
+
+
+# Agent: Fault case Generation Agent
+## Task:
+    generate a fault injection configuration YAML file according to the previous stage.
+
+
+
+# Agent: Fault case Generation Agent
+## Final Answer:
+```yaml
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: order-service-delay
+  namespace: testing-namespace
+spec:
+  action: delay
+  mode: all
+  selector:
+    pods:
+      testing-namespace:
+        - user-service-pod
+  delay:
+    latency: '10s'
+    correlation: '0'
+    jitter: '0'
+  duration: '60s'
+  scheduler:
+    cron: '@every 10s'
+  target:
+    selector:
+      namespaces:
+        - testing-namespace
+      labelSelectors:
+        app: order-service
+  mode: one
+```
+
+This YAML configuration instructs ChaosMesh to introduce a communication delay specifically on the `user-service-pod` within the `testing-namespace`. The delay lasts for 10 seconds and occurs intermittently every 10 seconds, simulating the communication fault scenario as required.
+
+
+######################
+```yaml
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: order-service-delay
+  namespace: testing-namespace
+spec:
+  action: delay
+  mode: all
+  selector:
+    pods:
+      testing-namespace:
+        - user-service-pod
+  delay:
+    latency: '10s'
+    correlation: '0'
+    jitter: '0'
+  duration: '60s'
+  scheduler:
+    cron: '@every 10s'
+  target:
+    selector:
+      namespaces:
+        - testing-namespace
+      labelSelectors:
+        app: order-service
+  mode: one
+```
+
+This YAML configuration instructs ChaosMesh to introduce a communication delay specifically on the `user-service-pod` within the `testing-namespace`. The delay lasts for 10 seconds and occurs intermittently every 10 seconds, simulating the communication fault scenario as required.
