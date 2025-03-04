@@ -1,0 +1,20 @@
+[project]
+name = "text2fault"
+version = "0.1.0"
+description = "text2fault using crewAI"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.10,<=3.13"
+dependencies = [
+    "crewai[tools]>=0.80.0,<1.0.0"
+]
+
+[project.scripts]
+text2fault = "text2fault.main:run"
+run_crew = "text2fault.main:run"
+train = "text2fault.main:train"
+replay = "text2fault.main:replay"
+test = "text2fault.main:test"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
